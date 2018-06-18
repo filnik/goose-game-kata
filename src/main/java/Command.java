@@ -1,17 +1,28 @@
-public class Command {
-    private Output output;
-    private static int round = 0;
+import java.util.ArrayList;
 
-    public Command(Output output) {
+public class Command {
+    private PlayersRepository players;
+    private Output output;
+    private String inputString;
+
+    public Command(PlayersRepository players, Output output, String inputString) {
+        this.players = players;
         this.output = output;
+        this.inputString = inputString;
     }
 
     public void execute() {
-        if (round == 0){
-            output.print("players: Pippo");
-            round++;
+        Player player = Player.fromInputString(inputString);
+        if (players.contains(player)){
+            output.print("Pippo: already existing player");
         } else {
-            output.print("players: Pippo, Pluto");
+            players.add(player);
+            String outputString = "players: ";
+            for (Player singlePlayer : players) {
+                outputString += singlePlayer.toString() + ", ";
+            }
+            outputString = outputString.replaceFirst(", $", "");
+            output.print(outputString);
         }
     }
 }

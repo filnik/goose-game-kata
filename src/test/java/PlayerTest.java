@@ -26,4 +26,19 @@ public class PlayerTest {
         verify(output).print("players: Pippo, Pluto");
     }
 
+    @Test
+    public void duplicatedPlayer(){
+        /*
+        If there is already a participant "Pippo"
+        the user writes: "add player Pippo"
+        the system responds: "Pippo: already existing player"
+         */
+        input.write("add player Pippo");
+        input.write("add player Pippo");
+
+        gooseGame.start();
+
+        verify(output).print("players: Pippo");
+        verify(output).print("Pippo: already existing player");
+    }
 }
