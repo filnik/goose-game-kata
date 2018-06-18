@@ -1,28 +1,18 @@
-import java.util.ArrayList;
+public abstract class Command {
+    protected PlayersRepository players;
+    protected Output output;
+    protected String inputString;
 
-public class Command {
-    private PlayersRepository players;
-    private Output output;
-    private String inputString;
-
-    public Command(PlayersRepository players, Output output, String inputString) {
+    public Command(PlayersRepository players, Output output) {
         this.players = players;
         this.output = output;
-        this.inputString = inputString;
     }
 
-    public void execute() {
-        Player player = Player.fromInputString(inputString);
-        if (players.contains(player)){
-            output.print("Pippo: already existing player");
-        } else {
-            players.add(player);
-            String outputString = "players: ";
-            for (Player singlePlayer : players) {
-                outputString += singlePlayer.toString() + ", ";
-            }
-            outputString = outputString.replaceFirst(", $", "");
-            output.print(outputString);
-        }
+    public abstract void execute();
+
+    public abstract boolean matches(String inputString);
+
+    public void add(String inputString) {
+        this.inputString = inputString;
     }
 }

@@ -16,7 +16,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void addAPlayer(){
+    void add(){
         input.write("add player Pippo");
         input.write("add player Pluto");
 
@@ -27,7 +27,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void duplicatedPlayer(){
+    void duplicated(){
         /*
         If there is already a participant "Pippo"
         the user writes: "add player Pippo"
@@ -40,5 +40,32 @@ public class PlayerTest {
 
         verify(output).print("players: Pippo");
         verify(output).print("Pippo: already existing player");
+    }
+
+    @Test
+    void move() {
+        /*
+        If there are two participants "Pippo" and "Pluto" on space "Start"
+        the user writes: "move Pippo 4, 2"
+        the system responds: "Pippo rolls 4, 2. Pippo moves from Start to 6"
+        the user writes: "move Pluto 2, 2"
+        the system responds: "Pluto rolls 2, 2. Pluto moves from Start to 4"
+        the user writes: "move Pippo 2, 3"
+        the system responds: "Pippo rolls 2, 3. Pippo moves from 6 to 11"
+         */
+
+        input.write("add player Pippo");
+        input.write("add player Pluto");
+        input.write("move Pippo 4, 2");
+        input.write("move Pluto 2, 2");
+        input.write("move Pippo 2, 3");
+
+        gooseGame.start();
+
+        verify(output).print("players: Pippo");
+        verify(output).print("players: Pippo, Pluto");
+        verify(output).print("Pippo rolls 4, 2. Pippo moves from Start to 6");
+        verify(output).print("Pluto rolls 2, 2. Pluto moves from Start to 4");
+        verify(output).print("Pippo rolls 2, 3. Pippo moves from 6 to 11");
     }
 }
