@@ -1,9 +1,9 @@
 
 public class CommandFactory {
-    private final PlayersRepository players = new PlayersRepository();
     private Command[] commandsSupported;
 
     public CommandFactory(Output output) {
+        PlayersRepository players = new PlayersRepository();
         this.commandsSupported = new Command[]{
                 new AddCommand(players, output),
                 new MoveCommand(players, output)

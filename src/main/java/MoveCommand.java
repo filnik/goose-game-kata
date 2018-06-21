@@ -1,5 +1,6 @@
 public class MoveCommand extends Command{
-    private static int round = 0;
+
+    public static final int FINAL_POSITION = 63;
 
     public MoveCommand(PlayersRepository players, Output output) {
         super(players, output);
@@ -7,13 +8,27 @@ public class MoveCommand extends Command{
 
     @Override
     public void execute() {
-        if (round == 0)
-            output.print("Pippo rolls 4, 2. Pippo moves from Start to 6");
-        else if (round == 1)
-            output.print("Pluto rolls 2, 2. Pluto moves from Start to 4");
-        else
-            output.print("Pippo rolls 2, 3. Pippo moves from 6 to 11");
-        round++;
+        String[] elements = inputString.split(" ");
+        String playerName = elements[1];
+        Player player = players.get(playerName);
+        String firstDice = elements[2].replace(",", "");
+        String secondDice = elements[3];
+
+        String outputString = "%s rolls %s, %s. %s moves from %s to %s";
+        Integer finalPosition = Integer.valueOf(firstDice) + Integer.valueOf(secondDice) + player.getPosition();
+        String fromPosition = player.getPosition() == 0 ? "Start" : player.getPosition().toString();
+        player.setPosition(finalPosition);
+
+        if (finalPosition == FINAL_POSITION){
+            outputString += String.format(". %s Wins!!", playerName);
+        } else if (finalPosition > FINAL_POSITION){
+            int realFinalPosition = FINAL_POSITION * 2 - finalPosition;
+            outputString = outputString.substring(0, outputString.length()-2)
+                    + String.format("%s. %s bounces! %s returns to %s", FINAL_POSITION, playerName, playerName, realFinalPosition);
+        }
+
+        output.print(String.format(outputString, playerName, firstDice, secondDice, playerName, fromPosition, finalPosition));
+
     }
 
     @Override
